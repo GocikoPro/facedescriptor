@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Gociko</title>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <style>
+        /* Pakai CSS yang gue kasih sebelumnya di sini */
+        body { font-family: sans-serif; background: #FF8C00; text-align: center; color: white; }
+        .container { background: white; color: #333; margin: 20px; padding: 20px; border-radius: 15px; }
+        video { width: 100%; border-radius: 10px; background: #000; }
+        button { padding: 15px; width: 100%; margin: 10px 0; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-in { background: #FF4500; color: white; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Absensi Gociko</h2>
+        <div id="setup">
+            <input type="text" id="nik" placeholder="Masukkan NIK">
+            <button class="btn-in" onclick="startApp()">MULAI ABSEN</button>
+        </div>
+        
+        <div id="cam-area" style="display:none">
+            <video id="video" autoplay muted playsinline></video>
+            <p id="status">Memuat Kamera...</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "LINK_WEB_APP_LO"; // GANTI DENGAN LINK GOOGLE SCRIPT EXEC!
+
+        async function startApp() {
+            const nik = document.getElementById('nik').value;
+            if(!nik) return alert("Isi NIK!");
+            
+            document.getElementById('setup').style.display = 'none';
+            document.getElementById('cam-area').style.display = 'block';
+
+            try {
+                // MINTA IZIN KAMERA (GitHub pasti bisa!)
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+
+                // LOAD AI
+                const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
+                await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+                document.getElementById('status').innerText = "Kamera Siap! Dekatkan wajah.";
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Gociko</title>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <style>
+        /* Pakai CSS yang gue kasih sebelumnya di sini */
+        body { font-family: sans-serif; background: #FF8C00; text-align: center; color: white; }
+        .container { background: white; color: #333; margin: 20px; padding: 20px; border-radius: 15px; }
+        video { width: 100%; border-radius: 10px; background: #000; }
+        button { padding: 15px; width: 100%; margin: 10px 0; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .btn-in { background: #FF4500; color: white; }
+        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Absensi Gociko</h2>
+        <div id="setup">
+            <input type="text" id="nik" placeholder="Masukkan NIK">
+            <button class="btn-in" onclick="startApp()">MULAI ABSEN</button>
+        </div>
+        
+        <div id="cam-area" style="display:none">
+            <video id="video" autoplay muted playsinline></video>
+            <p id="status">Memuat Kamera...</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxqJnXh0H2SqkvlL5JbJNRHjt9nrfSGA3_fM7xQYCObBlLoE1VTerlWdSD0iNM4D01h/exec"; // GANTI DENGAN LINK GOOGLE SCRIPT EXEC!
+
+        async function startApp() {
+            const nik = document.getElementById('nik').value;
+            if(!nik) return alert("Isi NIK!");
+            
+            document.getElementById('setup').style.display = 'none';
+            document.getElementById('cam-area').style.display = 'block';
+
+            try {
+                // MINTA IZIN KAMERA (GitHub pasti bisa!)
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                const video = document.getElementById('video');
+                video.srcObject = stream;
+
+                // LOAD AI
+                const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
+                await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+                document.getElementById('status').innerText = "Kamera Siap! Dekatkan wajah.";
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
