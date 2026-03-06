@@ -1,111 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Absensi Gociko</title>
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
     <style>
-        /* Pakai CSS yang gue kasih sebelumnya di sini */
-        body { font-family: sans-serif; background: #FF8C00; text-align: center; color: white; }
-        .container { background: white; color: #333; margin: 20px; padding: 20px; border-radius: 15px; }
-        video { width: 100%; border-radius: 10px; background: #000; }
-        button { padding: 15px; width: 100%; margin: 10px 0; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        .btn-in { background: #FF4500; color: white; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Absensi Gociko</h2>
-        <div id="setup">
-            <input type="text" id="nik" placeholder="Masukkan NIK">
-            <button class="btn-in" onclick="startApp()">MULAI ABSEN</button>
-        </div>
-        
-        <div id="cam-area" style="display:none">
-            <video id="video" autoplay muted playsinline></video>
-            <p id="status">Memuat Kamera...</p>
-        </div>
-    </div>
-
-    <script>
-        const API_URL = "LINK_WEB_APP_LO"; // GANTI DENGAN LINK GOOGLE SCRIPT EXEC!
-
-        async function startApp() {
-            const nik = document.getElementById('nik').value;
-            if(!nik) return alert("Isi NIK!");
-            
-            document.getElementById('setup').style.display = 'none';
-            document.getElementById('cam-area').style.display = 'block';
-
-            try {
-                // MINTA IZIN KAMERA (GitHub pasti bisa!)
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                const video = document.getElementById('video');
-                video.srcObject = stream;
-
-                // LOAD AI
-                const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
-                await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-                document.getElementById('status').innerText = "Kamera Siap! Dekatkan wajah.";
-            } catch (err) {
-                alert("Error: " + err.message);
-            }
+        :root {
+            --primary: #FF8C00;
+            --danger: #FF4500;
+            --light: #FFFFFF;
         }
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi Gociko</title>
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-    <style>
-        /* Pakai CSS yang gue kasih sebelumnya di sini */
-        body { font-family: sans-serif; background: #FF8C00; text-align: center; color: white; }
-        .container { background: white; color: #333; margin: 20px; padding: 20px; border-radius: 15px; }
-        video { width: 100%; border-radius: 10px; background: #000; }
-        button { padding: 15px; width: 100%; margin: 10px 0; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        .btn-in { background: #FF4500; color: white; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--danger));
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            width: 85%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h2 { color: var(--danger); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:active { transform: scale(0.98); }
+        .camera-box {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 15px;
+            display: none; /* Muncul saat mulai */
+            border: 4px solid var(--primary);
+        }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        #status { font-size: 0.9rem; color: #666; margin-top: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
+
     <div class="container">
         <h2>Absensi Gociko</h2>
-        <div id="setup">
-            <input type="text" id="nik" placeholder="Masukkan NIK">
-            <button class="btn-in" onclick="startApp()">MULAI ABSEN</button>
+        
+        <div id="view-setup">
+            <input type="text" id="input-nik" placeholder="Masukkan NIK Anda" inputmode="numeric">
+            <button onclick="initApp()">MULAI ABSENSI</button>
+            <p id="status">Silakan masukkan NIK untuk memulai</p>
         </div>
         
-        <div id="cam-area" style="display:none">
-            <video id="video" autoplay muted playsinline></video>
-            <p id="status">Memuat Kamera...</p>
+        <div id="view-cam" style="display:none;">
+            <div class="camera-box" id="box-video" style="display:block;">
+                <video id="video" autoplay muted playsinline></video>
+            </div>
+            <p id="cam-status">Menyiapkan AI Wajah...</p>
         </div>
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxqJnXh0H2SqkvlL5JbJNRHjt9nrfSGA3_fM7xQYCObBlLoE1VTerlWdSD0iNM4D01h/exec"; // GANTI DENGAN LINK GOOGLE SCRIPT EXEC!
+        const API_URL = "https://script.google.com/macros/s/AKfycbxqJnXh0H2SqkvlL5JbJNRHjt9nrfSGA3_fM7xQYCObBlLoE1VTerlWdSD0iNM4D01h/exec"; // <--- GANTI INI BRO!
 
-        async function startApp() {
-            const nik = document.getElementById('nik').value;
-            if(!nik) return alert("Isi NIK!");
-            
-            document.getElementById('setup').style.display = 'none';
-            document.getElementById('cam-area').style.display = 'block';
+        async function initApp() {
+            const nik = document.getElementById('input-nik').value;
+            if(!nik) return alert("Wajib isi NIK!");
+
+            // Pindah Tampilan
+            document.getElementById('view-setup').style.display = 'none';
+            document.getElementById('view-cam').style.display = 'block';
+            const statusLabel = document.getElementById('cam-status');
 
             try {
-                // MINTA IZIN KAMERA (GitHub pasti bisa!)
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-                const video = document.getElementById('video');
-                video.srcObject = stream;
+                // 1. Minta Izin Kamera
+                statusLabel.innerText = "Membuka Kamera...";
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: "user" } 
+                });
+                document.getElementById('video').srcObject = stream;
 
-                // LOAD AI
+                // 2. Load Model AI
+                statusLabel.innerText = "Memuat AI Wajah (Tunggu...)";
                 const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
                 await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-                document.getElementById('status').innerText = "Kamera Siap! Dekatkan wajah.";
+                
+                statusLabel.innerText = "Siap! Dekatkan wajah ke kamera.";
+                statusLabel.style.color = "#FF8C00";
             } catch (err) {
-                alert("Error: " + err.message);
+                alert("Gagal: " + err.message);
+                location.reload();
             }
         }
     </script>
